@@ -10,12 +10,12 @@ jobs:
   two:
     docker:
       - image: circleci/golang:1.12
-      steps:
-        - checkout
-        - run: docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
-        - run: docker-compose build
-        - run: docker push $DOCKER_USER/scrapper
-        - run: docker push $DOCKER_USER/uploader
+    steps:
+      - checkout
+      - run: docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
+      - run: docker-compose build
+      - run: docker push $DOCKER_USER/scrapper
+      - run: docker push $DOCKER_USER/uploader
 workflows:
   version: 2
   one_and_two:
