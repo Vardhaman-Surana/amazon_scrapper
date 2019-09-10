@@ -61,7 +61,7 @@ func rConnect() *amqp.Connection{
 	if err!=nil{
 		return nil
 	}else {
-		fmt.Printf("%v",env.URL)
+		fmt.Printf("the url is %v",env.URL)
 		conn, err := amqp.Dial(env.URL)
 		if err != nil {
 			fmt.Printf("trying to reconnect")
