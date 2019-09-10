@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: uploader
+  namespace: microservice
+  labels:
+    run: uploader
+spec:
+  type: ClusterIP
+  ports:
+    - port: 1000
+      protocol: TCP
+      targetPort: 1000
+  selector:
+    run: uploader

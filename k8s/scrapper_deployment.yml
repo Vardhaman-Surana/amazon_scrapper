@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scrapper
+  namespace: microservice
+  labels:
+    app: scrapper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scrapper
+  template:
+    metadata:
+      labels:
+        app: scrapper
+    spec:
+      containers:
+        - name: scrapper
+          image: vardhaman123/scrapper:latest
+          command: ["./bin/Scrapper"]
+          args: ["-c", "sleep 10 && echo Sleep expired > /dev/termination-log"]
+

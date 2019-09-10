@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uploader
+  namespace: microservice
+  labels:
+    app: uploader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uploader
+  template:
+    metadata:
+      labels:
+        app: uploader
+    spec:
+      containers:
+        - name: uploader
+          image: vardhaman123/uploader:latest
+          command: ["./bin/Uploader"]
+          args: ["-c", "sleep 10 && echo Sleep expired > /dev/termination-log"]

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: microservice
+  labels:
+    app: rabbitmq
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5600
+      protocol: TCP
+      targetPort: 5672
+  selector:
+    app: rabbitmq
