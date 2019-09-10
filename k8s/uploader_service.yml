@@ -4,12 +4,10 @@ metadata:
   name: uploader
   namespace: microservice
   labels:
-    run: uploader
+    app: uploader
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-    - port: 1000
-      protocol: TCP
-      targetPort: 1000
+    - port: 4000
   selector:
-    run: uploader
+    app: uploader

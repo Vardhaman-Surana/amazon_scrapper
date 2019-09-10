@@ -18,5 +18,19 @@ spec:
       containers:
         - name: uploader
           image: vardhaman123/uploader:latest
-          command: ["./bin/Uploader"]
-          args: ["-c", "sleep 10 && echo Sleep expired > /dev/termination-log"]
+          ports:
+            - name: uploaerport
+              containerPort: 4000
+          env:
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: dburl
+            - name: RABBITMQ_URL
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: rabbiturl
+            - name: SERVICE_PORT
+              value: "4000"

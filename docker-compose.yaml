@@ -1,0 +1,77 @@
+version: '3'
+services:
+  database:
+    image: mysql:8.0
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: on-failure
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "amazon_scrapper"
+      MYSQL_USER: "vds"
+      MYSQL_PASSWORD: "passworduser"
+
+
+  uploader:
+    build:
+      context: .
+      dockerfile: ./cmd/UploadService/Dockerfile
+    image: vardhaman123/uploader
+    restart: always
+    ports:
+      - 4000:4000
+    environment:
+      DB_USER: "vds"
+      DB_PASSWORD: "passworduser"
+      DB_NAME: "amazon_scrapper"
+      SERVICE_PORT: "4000"
+      DB_HOST: "database"
+      RABBITMQ_USER: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_HOST: "rabbitmq"
+    depends_on:
+      - database
+      - rabbitmq
+    links:
+      - database
+      - rabbitmq
+
+
+
+  scrapper:
+    build:
+      context: .
+      dockerfile: ./cmd/ScrapperService/Dockerfile
+    image: vardhaman123/scrapper
+    restart: always
+    ports:
+      - 1000:1000
+    environment:
+      DB_USER: "vds"
+      DB_PASSWORD: "passworduser"
+      DB_NAME: "amazon_scrapper"
+      DB_HOST: "database"
+      RABBITMQ_USER: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      RABBITMQ_HOST: "rabbitmq"
+    depends_on:
+      - database
+      - rabbitmq
+    links:
+      - database
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+      - 5000:5672
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+

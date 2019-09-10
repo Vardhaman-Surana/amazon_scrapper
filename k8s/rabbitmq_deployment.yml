@@ -20,10 +20,22 @@ spec:
           image: rabbitmq:3-management
           env:
             - name: RABBITMQ_ERLANG_COOKIE
-              value: "SWQOKODSQALRPCLNMEQG"
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: erlangCookie
             - name: RABBITMQ_DEFAULT_USER
-              value: "guest"
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: userName
             - name: RABBITMQ_DEFAULT_PASS
-              value: "guest"
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: password
             - name: RABBITMQ_DEFAULT_VHOST
-              value: "/"
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: vhost

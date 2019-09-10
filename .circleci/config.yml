@@ -1,0 +1,30 @@
+version: 2.1
+jobs:
+  one:
+    docker:
+      - image: circleci/golang:1.12
+    steps:
+      - checkout
+      - run: go mod download
+      - run: go test ./pkg/scrapper
+  two:
+    docker:
+      - image: circleci/golang:1.12
+      steps:
+        - checkout
+        - run: docker login --username $DOCKER_USER --password $DOCKER_PASSWORD
+        - run: docker-compose build
+        - run: docker push $DOCKER_USER/scrapper
+        - run: docker push $DOCKER_USER/uploader
+workflows:
+  version: 2
+  one_and_two:
+    jobs:
+      - one
+      - two:
+          requires:
+            - one
+          filters:
+            branches:
+              only:
+                - master
