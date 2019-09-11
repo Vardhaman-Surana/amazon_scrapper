@@ -19,39 +19,14 @@ spec:
         - name: scrapper
           image: vardhaman123/scrapper:latest
           env:
-            - name: DB_USER
+            - name: DB_URL
               valueFrom:
                 secretKeyRef:
                   name: db-secret
-                  key: userName
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: password
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: dbName
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: serviceName
-            - name: RABBITMQ_USER
+                  key: dburl
+            - name: RABBITMQ_URL
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-secret
-                  key: userName
-            - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-secret
-                  key: password
-            - name: RABBITMQ_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: rabbitmq-secret
-                  key: serviceName
+                  key: rabbiturl
 

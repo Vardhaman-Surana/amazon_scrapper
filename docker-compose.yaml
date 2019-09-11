@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   database:
     image: mysql:8.0
@@ -12,50 +12,36 @@ services:
       MYSQL_DATABASE: "amazon_scrapper"
       MYSQL_USER: "vds"
       MYSQL_PASSWORD: "passworduser"
-
-
   uploader:
     build:
       context: .
       dockerfile: ./cmd/UploadService/Dockerfile
+      target: uploader
     image: vardhaman123/uploader
     restart: always
     ports:
       - 4000:4000
     environment:
-      DB_USER: "vds"
-      DB_PASSWORD: "passworduser"
-      DB_NAME: "amazon_scrapper"
-      SERVICE_PORT: "4000"
-      DB_HOST: "database"
-      RABBITMQ_USER: "guest"
-      RABBITMQ_PASSWORD: "guest"
-      RABBITMQ_HOST: "rabbitmq"
+      DB_URL: "vds:passworduser@tcp(database:3306)/amazon_scrapper?charset=utf8&parseTime=True&loc=Local"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
     depends_on:
       - database
       - rabbitmq
     links:
       - database
       - rabbitmq
-
-
-
   scrapper:
     build:
       context: .
       dockerfile: ./cmd/ScrapperService/Dockerfile
+      target: scrapper
     image: vardhaman123/scrapper
     restart: always
     ports:
       - 1000:1000
     environment:
-      DB_USER: "vds"
-      DB_PASSWORD: "passworduser"
-      DB_NAME: "amazon_scrapper"
-      DB_HOST: "database"
-      RABBITMQ_USER: "guest"
-      RABBITMQ_PASSWORD: "guest"
-      RABBITMQ_HOST: "rabbitmq"
+      DB_URL: "vds:passworduser@tcp(database:3306)/amazon_scrapper?charset=utf8&parseTime=True&loc=Local"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
     depends_on:
       - database
       - rabbitmq

@@ -18,6 +18,7 @@ jobs:
       - run: docker-compose build
       - run: docker push $DOCKER_USER/scrapper
       - run: docker push $DOCKER_USER/uploader
+      - run: docker system prune
 workflows:
   version: 2
   one_and_two:
