@@ -49,6 +49,22 @@ services:
       - database
       - rabbitmq
 
+  archiver:
+    build:
+      context: .
+      dockerfile: ./cmd/CreateArchives/Dockerfile
+    image: vardhaman123/archiver
+    restart: always
+    environment:
+      DB_URL: "vds:passworduser@tcp(database:3306)/amazon_scrapper?charset=utf8&parseTime=True&loc=Local"
+    depends_on:
+      - database
+    links:
+      - database
+
+
+
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbitmq

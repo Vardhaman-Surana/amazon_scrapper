@@ -21,5 +21,6 @@ func (r *Router)Create() *gin.Engine {
 
 	ginRouter.POST("/uploadProductLinksFile",fc.UploadCSV)
 	ginRouter.GET("/status",sc.CheckStatus)
+	ginRouter.GET("/getArchived",sc.GetArchived)
 	return ginRouter
 }

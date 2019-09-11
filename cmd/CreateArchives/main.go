@@ -20,5 +20,8 @@ func main(){
 	log.Println("Database Connected")
 	log.Println("*********************************")
 	now:=time.Now().Unix()
-	db.Exec("update products set deleted=2 where ?-updated > 60",now)
+	_,err=db.Exec("update products set deleted=2 where ?-updated > 60",now)
+	if err!=nil{
+		fmt.Printf("error updating the database:%v",err)
+	}
 }

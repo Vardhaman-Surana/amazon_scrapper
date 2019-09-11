@@ -110,3 +110,14 @@ func getStringStatus(status int)string{
 	}
 	return statusString
 }
+func (sc *ScrappingStatusController)GetArchived(c *gin.Context){
+	var output []models.Product
+	_,err:=sc.Db.Select(&output,"select * from products where deleted=2")
+	if err!=nil{
+		fmt.Printf("error in selecting archived links:%v",err)
+		JSONResponse:=models.NewJsonResponse("Internal Server error",err)
+		c.JSON(http.StatusInternalServerError, JSONResponse)
+		return
+	}
+	c.JSON(http.StatusOK, output)
+}
