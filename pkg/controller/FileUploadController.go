@@ -104,6 +104,7 @@ func (fc *FileUploadController) UploadCSV(c *gin.Context){
 					return
 				}
 				product.Updated=updatedTime
+				product.Deleted=0
 				product.Status=0
 				_,err=trans.Update(&product)
 				if err!=nil {
